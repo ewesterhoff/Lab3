@@ -1,24 +1,41 @@
+
+`include "alu.v"
+`include "lut.v"
+
 module JAL_module
 (
-output reg[31:0] toDataWr,
+output[31:0] toDataW,
 input[31:0]	PC,
 input[31:0] toMem,
 input[5:0] OPCode
 );
-  parameter constIncr = 4;
+  parameter constIncr = 32'b00000000000000000000000000000100; //4
+  wire[31:0] adder_out;
+  wire carryout, zero, overflow, if_jal;
+  wire[31:0] mux_out;
 
-  always @(OPCode) begin
-  if(OPCode == 6'b000000 && Funct == 6'b001000)
-    addrCode = 6'b111111;
-  else
-    addrCode = OPCode;
+ALU alu(.result(adder_out), .carryout(carryout), .zero(zero), .overflow(overflow),
+.operandA(constIncr), .operandB(PC), .command(3'd0)); //add
 
-    case (addrCode)
-      6'b000101:  begin muxindex = 2'b01; end //BEQ, op=4
-      6'b000110:  begin muxindex = 2'b10; end //BNE, op=5
-      6'b111111:  begin muxindex = 2'b11; end //JR, op=0, funct=8
-      default:  begin muxindex = 2'b00;end //else
-    endcase
-  end
+JalLUT JALTEST(.muxindex(if_jal), .OPCode(OPCode));
+
+doublemux32 mux(.din_0(adder_out), .din_1(toMem), .sel(if_jal), .mux_out(toDataW));
+
+endmodule
+
+module  doublemux32(
+input[31:0] din_0, // Mux first input
+input[31:0] din_1, // Mux Second input
+input sel, // Select input
+output reg[31:0] mux_out // Mux output
+);
+always @ (sel or din_0 or din_1)
+begin
+ if (sel == 1'b0) begin
+     mux_out = din_0;
+ end else begin
+     mux_out = din_1 ;
+ end
+ end
 
 endmodule

@@ -8,7 +8,7 @@
 `define NOR nor #10
 `define OR5 or #60
 
-// Mux for 5 inputs for bit slices 
+// Mux for 5 inputs for bit slices
 // AND gates set to 0 anything not called with 5 bit input
 module structuralMultiplexer5
 (
@@ -48,7 +48,7 @@ module structuralFullAdder
     `OR  CARRYOUT(carryout, caxorb, ab);
 endmodule
 
-//Add/Sub for bitslices. 
+//Add/Sub for bitslices.
 module AddSubN
 (
     output sum,  // 2's complement sum of a and b
@@ -79,6 +79,7 @@ module SLTmod #( parameter n = 31 )
     wire[n:0] sub;
     wire carryout0;
     wire subtract;
+    wire over;
 
     wire[32:0] carryin0;
 
@@ -118,7 +119,7 @@ module XORmod
 endmodule
 
 
-// NAND for bislices. 
+// NAND for bislices.
 module NANDmod
 (
     output out,

@@ -1,4 +1,4 @@
-/*
+
 module JalLUT
 (
 output reg muxindex,
@@ -26,7 +26,7 @@ input[5:0]	OPCode
   end
 
 endmodule
-*/
+
 
 module PC_OP_Decode
 (
