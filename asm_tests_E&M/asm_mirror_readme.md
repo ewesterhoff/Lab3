@@ -5,9 +5,8 @@ Tests addi, beq, sub, subi, lw, sw, jump
 Purpose: Takes in a data file and mirrors the elements over the middle line
 
 INPUT:
-* .data
-
-** my_array:
+- .data
+* my_array:
 * 0x11110000	# my_array[0]
 * 0x22220000
 * 0x44440000
