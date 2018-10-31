@@ -1,7 +1,7 @@
 
 `include "alu.v"
 `include "lut.v"
-/*
+
 module JAL_module
 (
 output[31:0] toDataW,
@@ -39,7 +39,7 @@ begin
 
 endmodule
 
-*/
+
 module Jump_Calc
 (
 output[31:0] new_PC,

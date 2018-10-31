@@ -51,3 +51,26 @@ input[5:0] Funct
   end
 
 endmodule
+
+module PC_Flag_Status
+(
+output reg[1:0] OPout,
+input[1:0]	OPin,
+input zeroFlag,
+input overflow
+);
+  always @(OPin) begin
+  if(OPin == 2'b01 && zeroFlag == 1)
+    OPout = 2'b01;
+  else if(OPin == 2'b01 && zeroFlag == 0)
+    OPout = 2'b00;
+  else if(OPin == 2'b10 && zeroFlag == 0)
+    OPout = 2'b10;
+  else if(OPin == 2'b10 && zeroFlag == 1 && overflow == 1)
+    OPout = 2'b10;
+  else if(OPin == 2'b10 && zeroFlag == 1 && overflow == 0)
+    OPout = 2'b00;
+  else
+    OPout = OPin; end
+
+endmodule
