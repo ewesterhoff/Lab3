@@ -32,12 +32,12 @@ module PC_OP_Decode
 (
 output reg[1:0] muxindex,
 input[5:0]	OPCode,
-input[5:0] Funct
+input[5:0] funct
 );
   reg[5:0] addrCode = 6'b000000;
 
   always @(OPCode) begin
-  if(OPCode == 6'b000000 && Funct == 6'b001000)
+  if(OPCode == 6'b000000 && funct == 6'b001000)
     addrCode = 6'b111111;
   else
     addrCode = OPCode;
