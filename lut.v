@@ -74,3 +74,18 @@ input overflow
     OPout = OPin; end
 
 endmodule
+
+
+module add4LUT
+(
+  output reg muxindex,
+  input[5:0] funct
+);
+  always @ (funct) begin
+    case (funct)
+      6'b001000: begin muxindex = 0; end
+      default: begin muxindex = 1; end
+    endcase
+  end
+
+endmodule
