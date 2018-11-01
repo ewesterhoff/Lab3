@@ -1,4 +1,4 @@
-`include "datapath.v"
+//`include "datapath.v"
 `include "module_blocks.v"
 
 module cpu
@@ -17,7 +17,7 @@ module cpu
 	wire[4:0] Rd, Rt, R31, Rs;
 	wire[15:0] imm16;
 
-	datamemory InstructionMemory(.clk(clk), .dataOut(instruction), .address(PC), .writeEnable(0),
+	datamemory InstructionMemory(.clk(clk), .dataOut(instruction), .address(PC), .writeEnable(1'b0),
 	.dataIn(0));
 
 	instrDecode instructionDecoder(.instruction(instruction), .OPCode(OPCode), .funct(funct),
@@ -31,7 +31,7 @@ module cpu
 
 	pc_add_4 pcadd4(.new_PC(PC_preJump), .funct(funct), .last_PC(PC_preAdd));
 
-	Jump_Calc jumpcheck(.new_PC(PC), .oldPC(PC_preJump), .instruction(instruction), .OPCode(OPCode));
+	Jump_Calc jumpcheck(.new_PC(PC), .old_PC(PC_preJump), .instruction(instruction), .OPCode(OPCode));
 
 	JAL_module jallogic(.toDataW(toDataW), .PC(PC), .toMem(toMem), .OPCode(OPCode));
 

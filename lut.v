@@ -55,30 +55,49 @@ endmodule
 module PC_Flag_Status
 (
 output reg[1:0] OPout,
-output reg[15:0] BEQ_in, BNE_in,
+output reg[31:0] BEQ_in, BNE_in,
 input[1:0]	OPin,
 input zeroFlag,
 input overflow,
 input[31:0] instruction
 );
+
+  wire[31:0] branch_instruction_beq, branch_instruction_bne;
+
+  signextend_branch jankaf1(.short(instruction[15:0]), .long(branch_instruction_beq));
+  signextend_branch jankaf2(.short(instruction[15:0]), .long(branch_instruction_bne));
+
   always @(OPin) begin
   if(OPin == 2'b01 && zeroFlag == 1) begin
     OPout = 2'b01;
-    BEQ_in = instruction[15:0]; end
+    BEQ_in = branch_instruction_beq; end
   else if(OPin == 2'b01 && zeroFlag == 0) begin
     OPout = 2'b00;
     BEQ_in = 0; end
   else if(OPin == 2'b10 && zeroFlag == 0) begin
     OPout = 2'b10;
-    BNE_in = instruction[15:0]; end
+    BNE_in = branch_instruction_bne; end
   else if(OPin == 2'b10 && zeroFlag == 1 && overflow == 1) begin
     OPout = 2'b10;
-    BNE_in = instruction[15:0]; end
+    BNE_in = branch_instruction_bne; end
   else if(OPin == 2'b10 && zeroFlag == 1 && overflow == 0) begin
     OPout = 2'b00;
     BNE_in = 0; end
   else
     OPout = OPin; end
+
+endmodule
+
+// Sign extend for the datapath
+module signextend_branch
+(
+    input [15:0] short, 
+    output reg [31:0] long
+);
+
+    always @ (short) begin
+        long = {{14{short[15]}}, short, 2'b0 };
+    end
 
 endmodule
 

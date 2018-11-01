@@ -1,5 +1,6 @@
 
-// Sign extend 
+
+// Sign extend for the datapath
 module signextend
 (
 	input [15:0] short, 
