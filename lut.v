@@ -55,21 +55,28 @@ endmodule
 module PC_Flag_Status
 (
 output reg[1:0] OPout,
+output reg[15:0] BEQ_in, BNE_in,
 input[1:0]	OPin,
 input zeroFlag,
-input overflow
+input overflow,
+input[31:0] instruction
 );
   always @(OPin) begin
-  if(OPin == 2'b01 && zeroFlag == 1)
+  if(OPin == 2'b01 && zeroFlag == 1) begin
     OPout = 2'b01;
-  else if(OPin == 2'b01 && zeroFlag == 0)
+    BEQ_in = instruction[15:0]; end
+  else if(OPin == 2'b01 && zeroFlag == 0) begin
     OPout = 2'b00;
-  else if(OPin == 2'b10 && zeroFlag == 0)
+    BEQ_in = 0; end
+  else if(OPin == 2'b10 && zeroFlag == 0) begin
     OPout = 2'b10;
-  else if(OPin == 2'b10 && zeroFlag == 1 && overflow == 1)
+    BNE_in = instruction[15:0]; end
+  else if(OPin == 2'b10 && zeroFlag == 1 && overflow == 1) begin
     OPout = 2'b10;
-  else if(OPin == 2'b10 && zeroFlag == 1 && overflow == 0)
+    BNE_in = instruction[15:0]; end
+  else if(OPin == 2'b10 && zeroFlag == 1 && overflow == 0) begin
     OPout = 2'b00;
+    BNE_in = 0; end
   else
     OPout = OPin; end
 
@@ -97,6 +104,8 @@ module instrDecode
   output reg RegWE, MemWE, memToReg, ALUsrc,
   output reg[1:0] RegDst,
   output reg[2:0] ALUcntrl
+  output reg[15:0] imm16;
+  output reg[4:0] Rd, Rt, R31, Rs;
   );
 
   reg[3:0] instrNum;

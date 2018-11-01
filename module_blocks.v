@@ -26,7 +26,6 @@ endmodule
 module Jump_Calc
 (
 output[31:0] new_PC,
-input[31:0]	alu_output,
 input[31:0] old_PC,
 input[31:0] instruction,
 input[5:0] OPCode
@@ -39,7 +38,7 @@ input[5:0] OPCode
 
   JumpLUT JTEST(.muxindex(if_jump), .OPCode(OPCode));
 
-  doublemux32 mux(.din_0(cat), .din_1(alu_output), .sel(if_jump), .mux_out(new_PC));
+  doublemux32 mux(.din_0(cat), .din_1(old_PC), .sel(if_jump), .mux_out(new_PC));
 endmodule
 
 
@@ -47,17 +46,21 @@ module PC_call
 (
 output[31:0] new_PC,
 input[31:0]	last_PC,
-input[31:0] BEQ_in,
-input[31:0] BNE_in,
 input[31:0] JR_in,
 input zeroFlag,
 input overflow,
-input[5:0] OPCode,
-input[5:0] funct
+input[31:0] instruction
 );
+  always @ (instruction) begin
+    OPCode = instruction[31:26];
+    funct = instruction[5:0]; end
+
   wire[1:0] muxindex, temp_muxindex;
+  wire[31:0] BEQ_in, BNE_in;
+
   PC_OP_Decode decode1(.muxindex(temp_muxindex), .OPCode(OPCode), .funct(funct));
-  PC_Flag_Status decode2(.OPout(muxindex), .OPin(temp_muxindex), .zeroFlag(zeroFlag), .overflow(overflow));
+  PC_Flag_Status decode2(.OPout(muxindex), .BEQ_in(BEQ_in), .BNE_in(BNE_in),
+  .OPin(temp_muxindex), .zeroFlag(zeroFlag), .overflow(overflow), .instruction(instruction));
 
   quadmux32 mux(.din_0(last_PC), .din_1(BEQ_in), .din_2(BNE_in), .din_3(JR_in), .sel(muxindex), .mux_out(new_PC));
 
@@ -65,15 +68,15 @@ endmodule
 
 // Actually a d flip flop
 module pc_hold #(parameter N = 32)
-(	
+(
 	input clk,
 	input[N-1:0] pc_in,
 	output reg[N-1:0] pc_out
 );
 	always @(posedge clk) begin
-			
+
     	pc_out <= pc_in;
-    	
+
     end
 endmodule
 

@@ -23,7 +23,7 @@ module datapath
 	input[31:0] Jal_out,
 
 	output [31:0] Op_end_result,
-	output Alu_zero, Alu_carryout, Alu_overflow
+	output Alu_zero, Alu_overflow
 );
 
 	wire[31:0] Da, Db, Alu_bin, DataMem_out, Op_end_result, Alu_op_result, immSE;
@@ -35,13 +35,13 @@ module datapath
 		din_3(R31), .sel(RegDst), .mux_out(Aw_in));
 
 	regfile Reg(.Clk(clk), .RegWrite(RegWr), .WriteRegister(Aw_in),
-		.ReadRegister2(Rt), .ReadRegister1(Rs), .WriteData(Jal_out), 
+		.ReadRegister2(Rt), .ReadRegister1(Rs), .WriteData(Jal_out),
 		.ReadData2(Db), .ReadData1(Da));
 
 	signextend SE(.short(imm16), .long(immSE));
 
 	// 0 - Db, 1 - SE
-	doublemux32 SEMux(.din_0(Db), .din_1(immSE), .sel(ALUSrc), 
+	doublemux32 SEMux(.din_0(Db), .din_1(immSE), .sel(ALUSrc),
 		.mux_out(Alu_bin));
 
 	ALU cpuAlu(.result(Alu_op_result), .carryout(Alu_carryout),
@@ -51,7 +51,7 @@ module datapath
 	datamemory Mem(.clk(clk), .dataOut(DataMem_out), .address(Alu_op_result),
 		.writeEnable(MemWr), .dataIn(Db));
 
-	doublemux32 MemRegMux(.din_0(Alu_op_result), .din_1(DataMem_out), 
+	doublemux32 MemRegMux(.din_0(Alu_op_result), .din_1(DataMem_out),
 		.sel(MemToReg), .mux_out(Op_end_result));
 
 
