@@ -89,3 +89,68 @@ module add4LUT
   end
 
 endmodule
+
+module instrDecode
+(
+  input[31:0] instruction,
+  output reg[5:0] OPCode, funct,
+  output reg RegWE, MemWE, memToReg, ALUsrc,
+  output reg[1:0] RegDst,
+  output reg[2:0] ALUcntrl
+  );
+
+  reg[3:0] instrNum;
+
+  always @ (instruction) begin
+    OPCode = instruction[31:26];
+    if (OPCode == 35) //load word
+      instrNum = 1;
+    else if (OPCode == 43) //store word
+      instrNum = 2;
+    else if (OPCode == 4) //beq
+      instrNum = 3;
+    else if (OPCode == 5) //bne
+      instrNum = 4;
+    else if (OPCode == 14) //xori
+      instrNum = 5;
+    else if (OPCode == 8) //addi
+      instrNum = 6;
+
+    else if (OPCode == 2) //jump
+      instrNum = 7;
+    else if (OPCode == 3) //jump and link
+      instrNum = 8;
+
+    else if (OPCode == 0) begin //r type
+      funct = instruction[5:0];
+      if (funct == 8) //jump register
+        instrNum = 9;
+      else if (funct == 32) //add
+        instrNum = 10;
+      else if (funct == 34) //subtract
+        instrNum = 11;
+      else if (funct == 42) //set less than
+        instrNum = 12;end
+    else
+      instrNum = 13;
+
+    case (instrNum)
+      1: begin RegDst = 1; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 1; ALUsrc = 1; end
+      2: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 1; memToReg = 0; ALUsrc = 1; end
+      3: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
+      4: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
+      5: begin RegDst = 1; RegWE = 1; ALUcntrl = 2; MemWE = 0; memToReg = 0; ALUsrc = 1; end
+      6: begin RegDst = 1; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
+      7: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
+      8: begin RegDst = 2; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
+      9: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
+      10: begin RegDst = 0; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 0; end
+      11: begin RegDst = 0; RegWE = 1; ALUcntrl = 1; MemWE = 0; memToReg = 0; ALUsrc = 0; end
+      12: begin RegDst = 0; RegWE = 1; ALUcntrl = 3; MemWE = 0; memToReg = 0; ALUsrc = 0; end
+      default: begin RegDst = 1; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
+    endcase
+
+  end
+
+
+  endmodule
