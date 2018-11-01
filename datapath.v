@@ -22,11 +22,16 @@ module datapath
 
 	input[31:0] Jal_out,
 
+<<<<<<< HEAD
 	output [31:0] Op_end_result,
 	output Alu_zero, Alu_overflow
+=======
+	output [31:0] Op_end_result, Da,
+	output Alu_zero, Alu_carryout, Alu_overflow
+>>>>>>> 4ed0beb599ec608098a3608fc203af02ec4dacaa
 );
 
-	wire[31:0] Da, Db, Alu_bin, DataMem_out, Op_end_result, Alu_op_result, immSE;
+	wire[31:0] Db, Alu_bin, DataMem_out, Op_end_result, Alu_op_result, immSE;
 	wire[4:0] Aw_in;
 	wire Alu_zero, Alu_carryout, Alu_overflow;
 
