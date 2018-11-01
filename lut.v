@@ -103,9 +103,9 @@ module instrDecode
   output reg[5:0] OPCode, funct,
   output reg RegWE, MemWE, memToReg, ALUsrc,
   output reg[1:0] RegDst,
-  output reg[2:0] ALUcntrl
-  output reg[15:0] imm16;
-  output reg[4:0] Rd, Rt, R31, Rs;
+  output reg[2:0] ALUcntrl,
+  output reg[15:0] imm16,
+  output reg[4:0] Rd, Rt, R31, Rs
   );
 
   reg[3:0] instrNum;

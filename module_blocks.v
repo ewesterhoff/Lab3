@@ -51,6 +51,8 @@ input zeroFlag,
 input overflow,
 input[31:0] instruction
 );
+  reg[5:0] OPCode, funct;
+  
   always @ (instruction) begin
     OPCode = instruction[31:26];
     funct = instruction[5:0]; end

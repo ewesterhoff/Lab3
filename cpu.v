@@ -10,6 +10,7 @@ module cpu
 	wire[5:0] OPCode, funct;
 	wire RegWE, MemWE, memToReg, ALUsrc;
 	wire zeroFlag, overflow;
+	wire[31:0] toDataW, toMem;
 	wire[31:0] PC_fromCall, PC_preAdd, PC_preJump, PC;
 	wire[1:0] RegDst;
   wire[2:0] ALUcntrl;
@@ -26,7 +27,7 @@ module cpu
 	PC_call pccaller(.new_PC(PC_fromCall), .last_PC(PC), .JR_in(JR_in), .zeroFlag(zeroFlag),
 	.overflow(overflow), .instruction(instruction));
 
-	pc_hold pcholder(.clk(clk), .pc_in(PC_fromCall), pc_out(PC_preAdd));
+	pc_hold pcholder(.clk(clk), .pc_in(PC_fromCall), .pc_out(PC_preAdd));
 
 	pc_add_4 pcadd4(.new_PC(PC_preJump), .funct(funct), .last_PC(PC_preAdd));
 
