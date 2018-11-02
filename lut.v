@@ -177,10 +177,10 @@ module instrDecode
       2: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 1; memToReg = 0; ALUsrc = 1; end
       3: begin RegDst = 0; RegWE = 0; ALUcntrl = 1; MemWE = 0; memToReg = 0; ALUsrc = 0; end
       4: begin RegDst = 0; RegWE = 0; ALUcntrl = 1; MemWE = 0; memToReg = 0; ALUsrc = 0; end
-      5: begin RegDst = 1; RegWE = 1; ALUcntrl = 2; MemWE = 0; memToReg = 0; ALUsrc = 0; end
+      5: begin RegDst = 1; RegWE = 1; ALUcntrl = 2; MemWE = 0; memToReg = 0; ALUsrc = 1; end
       6: begin RegDst = 1; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
       7: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
-      8: begin RegDst = 2; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
+      8: begin RegDst = 2; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
       9: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
       10: begin RegDst = 0; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 0; end
       11: begin RegDst = 0; RegWE = 1; ALUcntrl = 1; MemWE = 0; memToReg = 0; ALUsrc = 0; end

@@ -5,8 +5,8 @@ include ../settings.mk
 ALLMEM := $(TEXTMEMDUMP) $(DATAMEMDUMP)
 
 # MARS is pre-installed (/usr/local/bin/mars) on VM. Non-VM users should use
-MARS_PATH := java -jar /usr/local/share/mars/Mars4_5.jar
-#MARS_PATH := mars
+#MARS_PATH := java -jar /usr/local/share/mars/Mars4_5.jar
+MARS_PATH := java -jar /home/march/Downloads/Mars4_5.jar
 MARS_OPTS := a  mc CompactTextAtZero
 MARS      := $(MARS_PATH) $(MARS_OPTS)
 

@@ -3,7 +3,7 @@
 ## Assembly settings
 
 # Assembly program (minus .asm extension)
-PROGRAM := asm_mirror
+PROGRAM := jr_jal
 
 # Memory image(s) to create from the assembly program
 TEXTMEMDUMP := $(PROGRAM).text.hex

@@ -164,7 +164,7 @@ module datapath
     .zero(Alu_zero), .overflow(Alu_overflow),
     .operandA(Da), .operandB(Alu_bin), .command(ALUcntrl));
 
-  datamemory #(32'b00000000000000000000110000000000, 32'b00000000000000000000010000000000) Mem(.clk(clk), .dataOut(DataMem_out), .address(Alu_op_result),
+  datamemory #(32'b00000000000000000000110000000000, 32'b00000000000000000010000000000000) Mem(.clk(clk), .dataOut(DataMem_out), .address(Alu_op_result),
     .writeEnable(MemWr), .dataIn(Db));
 
   doublemux32 MemRegMux(.din_0(Alu_op_result), .din_1(DataMem_out),
@@ -211,18 +211,19 @@ module datamemory
     // 0x1000 to incoming address. add offset parameter
 
     reg [31:0] memory [depth-1:0];
-    wire [31:0] div4_address = address >> 2;     // divide by 4
     wire[31:0] shift_address; // use the ALU to shift the address as necessary (shift if accessing datamemory)
     wire z, c, o; // for alu
 
     ALU alu(.result(shift_address), .carryout(c), .zero(z), .overflow(o),
-  .operandA(div4_address), .operandB(offset), .command(3'd1)); //sub
+  .operandA(address), .operandB(offset), .command(3'd1)); //sub
 
-    assign dataOut = memory[shift_address];
+    wire [31:0] div4_address = shift_address >> 2;
+
+    assign dataOut = memory[div4_address];
 
     always @(posedge clk) begin
         if(writeEnable)begin
-            memory[shift_address] <= dataIn;
+            memory[div4_address] <= dataIn;
             end
     end
 
