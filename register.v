@@ -146,10 +146,8 @@ input		clk
 	reg [5:0] counter;
 
 	always @(posedge clk) begin
-        if(wrenable) begin
-	        for (counter = 0; counter < 32; counter = counter + 1)
-	        	q[counter] <= 1'b0;
-        end
+        for (counter = 0; counter < 32; counter = counter + 1)
+        	q[counter] <= 1'b0;
     end
 
 endmodule

@@ -13,7 +13,6 @@ module signextend
 
 endmodule
 
-
 // ------------------------------------------------------------------------
 // Data Memory
 //   Positive edge triggered
@@ -21,28 +20,31 @@ endmodule
 //   If writeEnable is true, writes dataIn to mem[address]
 // ------------------------------------------------------------------------
 
+// Text menory size: 4092
+// Datapath memory size: 28675
 module datamemory
 #(
-    parameter addresswidth  = 32,
-    parameter depth         = 32,//2**addresswidth,
-    parameter width         = 32
+    parameter depth = 4096,
+    parameter offset = 0
 )
 (
     input 		                clk,
-    output reg [width-1:0]      dataOut,
-    input [addresswidth-1:0]    address,
-    input                       writeEnable,
-    input [width-1:0]           dataIn
+    output[31:0]       dataOut,
+    input [31:0]            address,
+    input               writeEnable,
+    input [31:0]             dataIn
 );
+    // convert address from mips thing to verilog index 0,4,8 to 0,1,2
+    // 0x1000 to incoming address. add offset parameter
 
+    reg [31:0] memory [depth-1:0];
 
-    reg [width-1:0] memory [depth-1:0];
+    assign dataOut = memory[address];
 
     always @(posedge clk) begin
         if(writeEnable)begin
             memory[address] <= dataIn;
             end
-        dataOut <= memory[address];
     end
 
 endmodule

@@ -1,12 +1,12 @@
 // Adder circuit
-`define AND and #30
-`define AND4 and #50
-`define OR or #30
-`define XOR xor #100
-`define NOT not #10
-`define NAND nand #10
-`define NOR nor #10
-`define OR5 or #60
+`define AND and 
+`define AND4 and 
+`define OR or 
+`define XOR xor 
+`define NOT not 
+`define NAND nand 
+`define NOR nor 
+`define OR5 or 
 
 // Mux for 5 inputs for bit slices
 // AND gates set to 0 anything not called with 5 bit input

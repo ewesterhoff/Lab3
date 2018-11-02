@@ -13,11 +13,11 @@ module cpu
 	wire[31:0] toDataW, toMem;
 	wire[31:0] PC_fromCall, PC_preAdd, PC_preJump, PC;
 	wire[1:0] RegDst;
-  wire[2:0] ALUcntrl;
+    wire[2:0] ALUcntrl;
 	wire[4:0] Rd, Rt, R31, Rs;
 	wire[15:0] imm16;
 
-	datamemory InstructionMemory(.clk(clk), .dataOut(instruction), .address(PC), .writeEnable(1'b0),
+	datamemory #(4096) InstructionMemory(.clk(clk), .dataOut(instruction), .address(PC_preAdd), .writeEnable(1'b0),
 	.dataIn(0));
 
 	instrDecode instructionDecoder(.instruction(instruction), .OPCode(OPCode), .funct(funct),

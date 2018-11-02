@@ -76,7 +76,12 @@ module pc_hold #(parameter N = 32)
 	input[N-1:0] pc_in,
 	output reg[N-1:0] pc_out
 );
-	always @(posedge clk) begin
+
+  initial begin
+    pc_out <= 0;
+  end
+
+	always @(negedge clk) begin
 
     	pc_out <= pc_in;
 
@@ -154,7 +159,7 @@ module datapath
     .zero(Alu_zero), .overflow(Alu_overflow),
     .operandA(Da), .operandB(Alu_bin), .command(ALUcntrl));
 
-  datamemory Mem(.clk(clk), .dataOut(DataMem_out), .address(Alu_op_result),
+  datamemory #(28675) Mem(.clk(clk), .dataOut(DataMem_out), .address(Alu_op_result),
     .writeEnable(MemWr), .dataIn(Db));
 
   doublemux32 MemRegMux(.din_0(Alu_op_result), .din_1(DataMem_out),

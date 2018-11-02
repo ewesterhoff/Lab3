@@ -119,15 +119,22 @@ endmodule
 module instrDecode
 (
   input[31:0] instruction,
-  output reg[5:0] OPCode, funct,
+  output reg [5:0] OPCode, funct,
   output reg RegWE, MemWE, memToReg, ALUsrc,
   output reg[1:0] RegDst,
   output reg[2:0] ALUcntrl,
-  output reg[15:0] imm16,
-  output reg[4:0] Rd, Rt, R31, Rs
+  output [15:0] imm16,
+  output [4:0] Rd, Rt, R31, Rs
   );
 
   reg[3:0] instrNum;
+
+  //opcode and funct assigned below
+  assign imm16 = instruction[15:0];
+  assign Rs = instruction[25:21];
+  assign Rt = instruction[20:16];
+  assign Rd = instruction[15:11];
+  assign R31 = 5'b11111;
 
   always @ (instruction) begin
     OPCode = instruction[31:26];
@@ -158,7 +165,8 @@ module instrDecode
       else if (funct == 34) //subtract
         instrNum = 11;
       else if (funct == 42) //set less than
-        instrNum = 12;end
+        instrNum = 12;
+      end
     else
       instrNum = 13;
 

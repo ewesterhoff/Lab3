@@ -8,7 +8,7 @@
 `define Nor  3'd6
 `define Or   3'd7
 `include "alu_function.v"
-`define NOR32 nor #320 //32 input NOR
+`define NOR32 nor 
 
 module ALU
 (
