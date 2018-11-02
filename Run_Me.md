@@ -5,7 +5,7 @@
 ##### ADDI
 Tests add immediate, branch if equal, jum
 ```
-iverilog -o addi_cpu_test.t cpu_test.t.v
+iverilog -o addi_cpu_test.t addi_cpu_test.t.v
 ```
 
 ##### JR_JAL
