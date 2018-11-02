@@ -52,7 +52,7 @@ input overflow,
 input[31:0] instruction
 );
   reg[5:0] OPCode, funct;
-  
+
   always @ (instruction) begin
     OPCode = instruction[31:26];
     funct = instruction[5:0]; end
@@ -170,7 +170,7 @@ endmodule
 // Sign extend for the datapath
 module signextend
 (
-  input [15:0] short, 
+  input [15:0] short,
   output reg [31:0] long
 );
 
@@ -206,7 +206,7 @@ module datamemory
 
     reg [31:0] memory [depth-1:0];
     wire [31:0] div4_address = address >> 2;     // divide by 4
-    wire[31:0] shift_address; // use the ALU to shift the address as necessary (shift if accessing datamemory) 
+    wire[31:0] shift_address; // use the ALU to shift the address as necessary (shift if accessing datamemory)
     wire z, c, o; // for alu
 
     ALU alu(.result(shift_address), .carryout(c), .zero(z), .overflow(o),
@@ -243,7 +243,7 @@ endmodule
 
 module  quadmux32 #(parameter N = 31)
 (
-  
+
 input[N:0] din_0, // Mux first input
 input[N:0] din_1, // Mux second input
 input[N:0] din_2, // Mux thirdinput

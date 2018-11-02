@@ -91,7 +91,7 @@ endmodule
 // Sign extend for the datapath
 module signextend_branch
 (
-    input [15:0] short, 
+    input [15:0] short,
     output reg [31:0] long
 );
 
