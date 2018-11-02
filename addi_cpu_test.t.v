@@ -3,7 +3,7 @@
 module addi_cpu_test ();
 	reg clk;
 
-	initial clk = 1;
+	initial clk = 0;
 	always #10 clk =! clk;
 
 	cpu dut(.clk(clk));
