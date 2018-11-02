@@ -43,8 +43,8 @@ input[5:0] funct
     addrCode = OPCode;
 
     case (addrCode)
-      6'b000101:  begin muxindex = 2'b01; end //BEQ, op=4
-      6'b000110:  begin muxindex = 2'b10; end //BNE, op=5
+      6'b000100:  begin muxindex = 2'b01; end //BEQ, op=4
+      6'b000101:  begin muxindex = 2'b10; end //BNE, op=5
       6'b111111:  begin muxindex = 2'b11; end //JR, op=0, funct=8
       default:  begin muxindex = 2'b00;end //else
     endcase
@@ -67,11 +67,11 @@ input[31:0] instruction
   signextend_branch jankaf1(.short(instruction[15:0]), .long(branch_instruction_beq));
   signextend_branch jankaf2(.short(instruction[15:0]), .long(branch_instruction_bne));
 
-  always @(OPin) begin
-  if(OPin == 2'b01 && zeroFlag == 1) begin
+  always @* begin
+  if(OPin == 2'b01 && zeroFlag == 1'b1) begin
     OPout = 2'b01;
     BEQ_in = branch_instruction_beq; end
-  else if(OPin == 2'b01 && zeroFlag == 0) begin
+  else if(OPin == 2'b01 && zeroFlag == 1'b0) begin
     OPout = 2'b00;
     BEQ_in = 0; end
   else if(OPin == 2'b10 && zeroFlag == 0) begin
@@ -84,7 +84,7 @@ input[31:0] instruction
     OPout = 2'b00;
     BNE_in = 0; end
   else
-    OPout = OPin; end
+    OPout = OPin;  end
 
 endmodule
 
@@ -173,9 +173,9 @@ module instrDecode
     case (instrNum)
       1: begin RegDst = 1; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 1; ALUsrc = 1; end
       2: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 1; memToReg = 0; ALUsrc = 1; end
-      3: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
-      4: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
-      5: begin RegDst = 1; RegWE = 1; ALUcntrl = 2; MemWE = 0; memToReg = 0; ALUsrc = 1; end
+      3: begin RegDst = 0; RegWE = 0; ALUcntrl = 1; MemWE = 0; memToReg = 0; ALUsrc = 0; end
+      4: begin RegDst = 0; RegWE = 0; ALUcntrl = 1; MemWE = 0; memToReg = 0; ALUsrc = 0; end
+      5: begin RegDst = 1; RegWE = 1; ALUcntrl = 2; MemWE = 0; memToReg = 0; ALUsrc = 0; end
       6: begin RegDst = 1; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
       7: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
       8: begin RegDst = 2; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end

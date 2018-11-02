@@ -32,9 +32,9 @@ input[5:0] OPCode
 );
   wire if_jump;
   reg[31:0] cat;
-  always @ (cat) begin
-    cat = {instruction[25:0], old_PC[31:28]};
-    cat = cat<<2; end
+  always @ (if_jump) begin
+    cat = {old_PC[31:28], instruction[25:0], 2'b0};
+    end
 
   JumpLUT JTEST(.muxindex(if_jump), .OPCode(OPCode));
 
@@ -158,7 +158,7 @@ module datapath
     .zero(Alu_zero), .overflow(Alu_overflow),
     .operandA(Da), .operandB(Alu_bin), .command(ALUcntrl));
 
-  datamemory #(28675) Mem(.clk(clk), .dataOut(DataMem_out), .address(Alu_op_result),
+  datamemory #(32'b00000000000000000000110000000000, 32'b00000000000000000000010000000000) Mem(.clk(clk), .dataOut(DataMem_out), .address(Alu_op_result),
     .writeEnable(MemWr), .dataIn(Db));
 
   doublemux32 MemRegMux(.din_0(Alu_op_result), .din_1(DataMem_out),
@@ -191,8 +191,8 @@ endmodule
 // Datapath memory size: 4096-1024 = 3072
 module datamemory
 #(
-    parameter depth = 1024,
-    parameter offset = 0
+    parameter depth = 32'b00000000000000000000010000000000,
+    parameter offset = 32'b000000000000000000000000000000
 )
 (
     input                     clk,
@@ -205,7 +205,7 @@ module datamemory
     // 0x1000 to incoming address. add offset parameter
 
     reg [31:0] memory [depth-1:0];
-    wire div4_address = address << 2;     // divide by 4
+    wire [31:0] div4_address = address >> 2;     // divide by 4
     wire[31:0] shift_address; // use the ALU to shift the address as necessary (shift if accessing datamemory) 
     wire z, c, o; // for alu
 
