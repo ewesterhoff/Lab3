@@ -12,7 +12,7 @@ MEMDUMP := $(PROGRAM).text.hex
 ## Verilog settings
 
 # Top-level module/filename (minus .v/.t.v extension)
-TOPLEVEL := singleCycleCPU
+TOPLEVEL := cpu
 
 # All circuits included by the toplevel $(TOPLEVEL).t.v
 CIRCUITS := $(TOPLEVEL).v

@@ -1,4 +1,4 @@
-//`include "datapath.v"
+
 `include "module_blocks.v"
 
 module cpu
