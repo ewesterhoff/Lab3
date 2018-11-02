@@ -8,7 +8,7 @@ module cpu
 
 	wire[31:0] instruction, JR_in;
 	wire[5:0] OPCode, funct;
-	wire RegWE, MemWE, memToReg, ALUsrc;
+	wire RegWE, MemWE, memToReg, ALUsrc, useReg31;
 	wire zeroFlag, overflow;
 	wire[31:0] toDataW, toMem;
 	wire[31:0] PC_fromCall, PC_preAdd, PC_preJump, PC;
@@ -21,7 +21,7 @@ module cpu
 	.dataIn(0));
 
 	instrDecode instructionDecoder(.instruction(instruction), .OPCode(OPCode), .funct(funct),
-	.RegWE(RegWE), .MemWE(MemWE), .memToReg(memToReg), .ALUsrc(ALUsrc), .RegDst(RegDst),
+	.RegWE(RegWE), .MemWE(MemWE), .memToReg(memToReg), .ALUsrc(ALUsrc), .RegDst(RegDst),.useReg31(useReg31),
 	.ALUcntrl(ALUcntrl), .imm16(imm16), .Rd(Rd), .Rt(Rt), .R31(R31), .Rs(Rs));
 
 	PC_call pccaller(.new_PC(PC_fromCall), .last_PC(PC), .JR_in(JR_in), .zeroFlag(zeroFlag),
@@ -35,8 +35,8 @@ module cpu
 
 	JAL_module jallogic(.toDataW(toDataW), .PC(PC), .toMem(toMem), .OPCode(OPCode));
 
-	datapath cpuer(.clk(clk), .RegWr(RegWE), .RegDst(RegDst), .ALUcntrl(ALUcntrl), .MemWr(MemWE),
-	.MemToReg(memToReg), .ALUSrc(ALUsrc), .imm16(imm16), .Rd(Rd), .Rt(Rt), .R31(R31), .Rs(Rs),
+	datapath cpuer(.clk(clk), .RegWr(RegWE), .RegDst(RegDst), .ALUcntrl(ALUcntrl), .MemWr(MemWE), .useReg31(useReg31),
+	.MemToReg(memToReg), .ALUSrc(ALUsrc), .imm16(imm16), .Rd(Rd), .Rt(Rt), .R31(R31), .Rs(Rs), .Da(JR_in),
 	.Jal_out(toDataW), .Op_end_result(toMem), .Alu_zero(zeroFlag), .Alu_overflow(overflow));
 
 

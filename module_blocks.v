@@ -128,6 +128,7 @@ module datapath
   input MemWr,
   input MemToReg,
   input ALUSrc,
+  input useReg31,
 
   input[15:0] imm16,
 
@@ -143,15 +144,17 @@ module datapath
 );
 
   wire[31:0] Db, Alu_bin, DataMem_out, Op_end_result, Alu_op_result, immSE;
-  wire[4:0] Aw_in;
+  wire[4:0] Aw_in, Aa;
   wire Alu_zero, Alu_carryout, Alu_overflow;
 
   // 0 - Rd, 1 - Rt, 2 and 3 - R31 for lack of different idea
   quadmux32 #(4) AWMux (.din_0(Rd), .din_1(Rt), .din_2(R31), .
     din_3(R31), .sel(RegDst), .mux_out(Aw_in));
 
+  doublemux32 #(4) AaMux(.din_0(Rs), .din_1(R31), .sel(useReg31), .mux_out(Aa));
+
   regfile Reg(.Clk(clk), .RegWrite(RegWr), .WriteRegister(Aw_in),
-    .ReadRegister2(Rt), .ReadRegister1(Rs), .WriteData(Jal_out),
+    .ReadRegister2(Rt), .ReadRegister1(Aa), .WriteData(Jal_out),
     .ReadData2(Db), .ReadData1(Da));
 
   signextend SE(.short(imm16), .long(immSE));
@@ -229,12 +232,12 @@ module datamemory
 
 endmodule
 
-module  doublemux32(
-
-input[31:0] din_0, // Mux first input
-input[31:0] din_1, // Mux Second input
+module  doublemux32 #(parameter N = 31)
+(
+input[N:0] din_0, // Mux first input
+input[N:0] din_1, // Mux Second input
 input sel, // Select input
-output reg[31:0] mux_out // Mux output
+output reg[N:0] mux_out // Mux output
 );
 always @ (sel or din_0 or din_1)
 begin

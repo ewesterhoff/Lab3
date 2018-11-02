@@ -122,7 +122,7 @@ module instrDecode
 (
   input[31:0] instruction,
   output reg [5:0] OPCode, funct,
-  output reg RegWE, MemWE, memToReg, ALUsrc,
+  output reg RegWE, MemWE, memToReg, ALUsrc, useReg31,
   output reg[1:0] RegDst,
   output reg[2:0] ALUcntrl,
   output [15:0] imm16,
@@ -173,19 +173,19 @@ module instrDecode
       instrNum = 13;
 
     case (instrNum)
-      1: begin RegDst = 1; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 1; ALUsrc = 1; end
-      2: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 1; memToReg = 0; ALUsrc = 1; end
-      3: begin RegDst = 0; RegWE = 0; ALUcntrl = 1; MemWE = 0; memToReg = 0; ALUsrc = 0; end
-      4: begin RegDst = 0; RegWE = 0; ALUcntrl = 1; MemWE = 0; memToReg = 0; ALUsrc = 0; end
-      5: begin RegDst = 1; RegWE = 1; ALUcntrl = 2; MemWE = 0; memToReg = 0; ALUsrc = 1; end
-      6: begin RegDst = 1; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
-      7: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
-      8: begin RegDst = 2; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
-      9: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
-      10: begin RegDst = 0; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 0; end
-      11: begin RegDst = 0; RegWE = 1; ALUcntrl = 1; MemWE = 0; memToReg = 0; ALUsrc = 0; end
-      12: begin RegDst = 0; RegWE = 1; ALUcntrl = 3; MemWE = 0; memToReg = 0; ALUsrc = 0; end
-      default: begin RegDst = 1; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; end
+      1: begin RegDst = 1; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 1; ALUsrc = 1; useReg31 = 0; end
+      2: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 1; memToReg = 0; ALUsrc = 1; useReg31 = 0;end
+      3: begin RegDst = 0; RegWE = 0; ALUcntrl = 1; MemWE = 0; memToReg = 0; ALUsrc = 0; useReg31 = 0;end
+      4: begin RegDst = 0; RegWE = 0; ALUcntrl = 1; MemWE = 0; memToReg = 0; ALUsrc = 0; useReg31 = 0;end
+      5: begin RegDst = 1; RegWE = 1; ALUcntrl = 2; MemWE = 0; memToReg = 0; ALUsrc = 1; useReg31 = 0;end
+      6: begin RegDst = 1; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; useReg31 = 0;end
+      7: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; useReg31 = 0;end
+      8: begin RegDst = 2; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; useReg31 = 0;end
+      9: begin RegDst = 0; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; useReg31 = 1; end
+      10: begin RegDst = 0; RegWE = 1; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 0; useReg31 = 0;end
+      11: begin RegDst = 0; RegWE = 1; ALUcntrl = 1; MemWE = 0; memToReg = 0; ALUsrc = 0; useReg31 = 0;end
+      12: begin RegDst = 0; RegWE = 1; ALUcntrl = 3; MemWE = 0; memToReg = 0; ALUsrc = 0; useReg31 = 0;end
+      default: begin RegDst = 1; RegWE = 0; ALUcntrl = 0; MemWE = 0; memToReg = 0; ALUsrc = 1; useReg31 = 0;end
     endcase
 
   end
