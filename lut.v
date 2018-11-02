@@ -73,7 +73,7 @@ input[31:0] instruction
     BEQ_in = branch_instruction_beq; end
   else if(OPin == 2'b01 && zeroFlag == 1'b0) begin
     OPout = 2'b00;
-    BEQ_in = 0; end
+    BEQ_in = 32'b0; end
   else if(OPin == 2'b10 && zeroFlag == 0) begin
     OPout = 2'b10;
     BNE_in = branch_instruction_bne; end
@@ -83,8 +83,10 @@ input[31:0] instruction
   else if(OPin == 2'b10 && zeroFlag == 1 && overflow == 0) begin
     OPout = 2'b00;
     BNE_in = 0; end
-  else
-    OPout = OPin;  end
+  else begin
+    OPout = OPin;
+    BEQ_in = 0;
+    BNE_in = 0; end end
 
 endmodule
 

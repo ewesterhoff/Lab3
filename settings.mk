@@ -3,11 +3,11 @@
 ## Assembly settings
 
 # Assembly program (minus .asm extension)
-PROGRAM := addi
+PROGRAM := asm_mirror
 
 # Memory image(s) to create from the assembly program
-MEMDUMP := $(PROGRAM).text.hex
-
+TEXTMEMDUMP := $(PROGRAM).text.hex
+DATAMEMDUMP := $(PROGRAM).data.hex
 
 ## Verilog settings
 

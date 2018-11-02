@@ -58,13 +58,19 @@ input[31:0] instruction
     funct = instruction[5:0]; end
 
   wire[1:0] muxindex, temp_muxindex;
-  wire[31:0] BEQ_in, BNE_in;
+  wire[31:0] BEQ_in, BNE_in, BEQ_Addr, BNE_Addr;
+  wire zero, overflowx, carryout;
 
   PC_OP_Decode decode1(.muxindex(temp_muxindex), .OPCode(OPCode), .funct(funct));
   PC_Flag_Status decode2(.OPout(muxindex), .BEQ_in(BEQ_in), .BNE_in(BNE_in),
   .OPin(temp_muxindex), .zeroFlag(zeroFlag), .overflow(overflow), .instruction(instruction));
 
-  quadmux32 mux(.din_0(last_PC), .din_1(BEQ_in), .din_2(BNE_in), .din_3(JR_in), .sel(muxindex), .mux_out(new_PC));
+  ALU alu1(.result(BEQ_Addr), .carryout(carryout), .zero(zero), .overflow(overflowx),
+  .operandA(BEQ_in), .operandB(last_PC), .command(3'd0)); //add
+  ALU alu2(.result(BNE_Addr), .carryout(carryout), .zero(zero), .overflow(overflowx),
+  .operandA(BNE_in), .operandB(last_PC), .command(3'd0)); //add
+
+  quadmux32 mux(.din_0(last_PC), .din_1(BEQ_Addr), .din_2(BNE_Addr), .din_3(JR_in), .sel(muxindex), .mux_out(new_PC));
 
 endmodule
 

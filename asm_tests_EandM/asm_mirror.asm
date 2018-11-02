@@ -1,5 +1,5 @@
 # Problem statement: Mirror all elements
-
+li $sp 0x3ffc
 # Preconditions: 
 #    Array base address stored in register $t0
 #    Array size (# of words) stored in register $t1
